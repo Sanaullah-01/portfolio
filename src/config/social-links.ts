@@ -18,7 +18,7 @@ export const socialLinks = [
   },
   {
     name: "Twitter",
-    url: "#", // Prepared as an optional future social link
+    url: "https://x.com/sanaullah_haraj",
     icon: IconBrandX,
   }
 ];
