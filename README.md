@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sana Ullah Personal Portfolio and Engineering Blog Platform
 
-## Getting Started
+## Project Overview
+A comprehensive full-stack personal portfolio and engineering blog platform for Sana Ullah. It includes a modern, responsive UI with light/dark themes, an integrated contact system, and a secure admin dashboard for managing contacts and messages.
 
-First, run the development server:
+## Tech Stack
+* **Framework:** Next.js (App Router)
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS
+* **Database & ORM:** PostgreSQL (via Supabase), Prisma
+* **Authentication:** Supabase Auth (Admin Login)
+* **Email:** Resend
+* **Security:** Google reCAPTCHA v3, Rate Limiting
+* **Hosting:** Vercel
 
+## Local Setup
+
+1. **Clone repository:**
+   ```bash
+   git clone <repository-url>
+   cd sana-portfolio
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Create `.env` file:**
+   Copy `.env.example` to `.env` and fill in the required environment variables.
+   ```bash
+   cp .env.example .env
+   ```
+
+## Environment Variables
+The application requires several environment variables for Database, Supabase Auth, Resend, and Admin Security. Please refer to `.env.example` for the required keys and format. Do NOT expose real values in `.env.example`.
+
+## Database Setup
+1. Create a Supabase project and obtain the PostgreSQL connection strings.
+2. Add `DATABASE_URL` and `DIRECT_URL` to your `.env` file.
+3. Run the Prisma setup to push the schema:
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+## Admin Setup
+To set up the admin user, run the seed script:
+```bash
+npm run seed:admin
+```
+This will create the default admin role required for dashboard access.
+
+## Starting Development Server
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+This project is configured for deployment on **Vercel**. 
+1. Connect your GitHub repository to Vercel.
+2. Add all environment variables from `.env` to Vercel's environment variables settings.
+3. The Vercel build command is `npm run build`. Prisma generation should happen automatically if configured in `package.json` scripts, or add `npx prisma generate && next build`.
+4. Deploy and verify the live domain.
