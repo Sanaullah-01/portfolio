@@ -22,10 +22,16 @@ export default function AdminLogin() {
         throw new Error('reCAPTCHA not loaded')
       }
 
+      if (!process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+        throw new Error('reCAPTCHA site key is missing from environment variables.')
+      }
+
       // Get reCAPTCHA token
-      const token = await new Promise<string>((resolve) => {
+      const token = await new Promise<string>((resolve, reject) => {
         ;(window as unknown as { grecaptcha: { ready: (cb: () => void) => void, execute: (siteKey: string, options: { action: string }) => Promise<string> } }).grecaptcha.ready(() => {
-          ;(window as unknown as { grecaptcha: { execute: (siteKey: string, options: { action: string }) => Promise<string> } }).grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!, { action: 'admin_login' }).then(resolve)
+          ;(window as unknown as { grecaptcha: { execute: (siteKey: string, options: { action: string }) => Promise<string> } }).grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!, { action: 'admin_login' })
+            .then(resolve)
+            .catch((err) => reject(new Error('reCAPTCHA execution failed. Please verify your site key.')))
         })
       })
 
@@ -41,8 +47,12 @@ export default function AdminLogin() {
       } else {
         router.push('/admin')
       }
-    } catch (_err) {
-      setError('An unexpected error occurred. Please try again.')
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError('An unexpected error occurred. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
